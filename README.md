@@ -6,17 +6,20 @@ Vector.h
 
 | API | Info |
 |:----------|:----------|
-| - [ ] size()     |  return vector's size (int) |
-| - [ ] get(const rank) |return element's value|
-| - [ ] put(const rank,const element) |change element's value|
-| - [ ] insert(const rank,const element) |insert a value|
-| - [ ] remove(const rank)| del|
-|  - [ ] disordered()| return ordered or not|
-| - [ ]  sort()||
-| - [ ] find(const element)| return element with max rank|
-| - [ ] search(const element)v return element LSQ than e with max rank|
-| - [ ] deduplicate() ||||
-| - [ ] uniquify()||
-| - [ ] traverse() ||
-| - [ ]  [],=,==,>,<,>=,<=|operaters|
+|  size()     |  return vector's size (int) |
+|  get(const rank) |return element's value|
+|  put(const rank,const element) |change element's value|
+|  insert(const rank,const element) |insert a value|
+|  remove(const rank)| del|
+|  disordered()| return ordered or not|
+|   sort()||
+|  find(const element)| return element with max rank|
+|  search(const element)v return element LSQ than e with max rank|
+|  deduplicate() ||||
+|  uniquify()||
+|  traverse() ||
+|   [],=,==,>,<,>=,<=|operaters|
+<<<<<<< HEAD
 
+=======
+>>>>>>> d73bb6449642975f6f57c9d314702d78e009ab3a
