@@ -1,7 +1,7 @@
 #ifndef VECTOR_H_
 #define VECTOR_H_
 
-#define DEFAULT_CAPACITY 10
+#define DEFAULT_CAPACITY 5
 
 #include <cstdlib>
 
@@ -26,11 +26,13 @@ protected:
 	void swap(T &e1,T &e2);
 
 public:
-	vector(int c = DEFAULT_CAPACITY,int s = 0,T v = 0)
-	{_elem = new T[_capacity = c];for(_size = 0; _size < s; _elem[_size++] = v);}			//??_capacity = c ??why overload when two peremters
+	vector(int n = DEFAULT_CAPACITY,T ele = 0){
+		_elem = new T[_capacity = n<<1];
+		for(_size = 0; _size < n; _elem[_size++] = ele);
+		expand();
+	}
 	//defalt init
 	vector(const vector <T>& V){copyfrom(V._elem,0,V._size);}
-	//vector(int n,T const&ele){_elem = new T[n];for(_size = 0; _size < n; _elem[_size++] = ele);expand();}
 	~vector(){delete [] _elem;}
 
 
@@ -50,19 +52,8 @@ public:
 	void sort(){sort(0,_size);}
 	void traverse (void( *visit)(T&));
 	T& operator[] (Rank r) const{return _elem[r];}
-	//traverse();
 
-};
-//tool class
-class Fib { //Fibonacci数列类
-private:
-   int f, g; //f = fib(k - 1), g = fib(k)。均为int型，很快就会数值溢出
-public:
-   Fib ( int n ) //初始化为不小于n的最小Fibonacci项
-   { f = 1; g = 0; while ( g < n ) next(); } //fib(-1), fib(0)，O(log_phi(n))时间
-   int get()  { return g; } //获取当前Fibonacci项，O(1)时间
-   int next() { g += f; f = g - f; return g; } //转至下一Fibonacci项，O(1)时间
-   int prev() { f = g - f; g -= f; return g; } //转至上一Fibonacci项，O(1)时间
+
 };
 
 
@@ -120,11 +111,9 @@ bool vector<T>::disordered(){
 
 template <typename T>
 Rank vector<T>::search(T const&ele,Rank lo,Rank hi){
-	Fib fib(hi - lo);
-	while(lo - hi){
-		while(hi - lo < fib.get()) fib.prev();
-		Rank mi = lo + fib.get() - 1;
-		(ele < _elem[mi]) ? hi = mi : lo = mi + 1;
+	while(lo < hi){
+		Rank mid = (lo + hi) >> 1;
+		(ele < _elem[mid]) ? hi = mid : lo = mid + 1;
 	}
 	return --lo;
 }
