@@ -2,7 +2,7 @@
 #define LIST_H_
 
 #include "ListNode.h"
-#include <iostream>
+
 
 template <typename T>
 class List{
@@ -45,8 +45,6 @@ public:
 	int uniquify();
 	void reverse();
 	void traverse(void(*)(T &));
-
-	void add_up(List<T> l2);
 
 };
 
@@ -146,6 +144,35 @@ void List<T>::reverse(){
     for (ListNodePosi(T) p = head;p;p = p->pred)
     	swap(p->pred, p->succ); 
     swap(head,tail);
+}
+
+template <typename T>
+int List<T>::deduplicate(){
+	Rank old_size = _size;
+	Rank  i = 0;
+	for(ListNodePosi(T) p = last(); p != head; p = p -> pred){
+	    ListNodePosi(T) tmp = List<T>::find(p -> data,i,this -> last() -> succ);
+	  	if (tmp != NULL){
+	  		remove(tmp);
+	  	}
+	  	else{
+	  		i++;
+	  	}
+	}
+	return old_size - this -> size();
+}
+
+template <typename T>
+int List<T>::uniquify(){
+	Rank old_size = _size;
+	ListNodePosi(T) tmp = head -> succ;
+	for (ListNodePosi(T) p = head->succ; p != tail; p = p->succ){
+		if(p -> data != tmp -> data){
+			tmp -> succ = p;
+			p -> pred = tmp;
+			tmp = p;
+		}
+	}
 }
 
 template <typename T>
