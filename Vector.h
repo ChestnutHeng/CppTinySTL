@@ -1,7 +1,7 @@
 #ifndef VECTOR_H_
 #define VECTOR_H_
 
-#define DEFAULT_CAPACITY 5
+#define DEFAULT_CAPACITY 3
 
 #include <cstdlib>
 
@@ -26,7 +26,7 @@ protected:
 	void swap(T &e1,T &e2);
 
 public:
-	vector(int n = DEFAULT_CAPACITY,T ele = 0){
+	vector(int n = 0,T ele = 0){
 		_elem = new T[_capacity = n<<1];
 		for(_size = 0; _size < n; _elem[_size++] = ele);
 		expand();
@@ -189,3 +189,4 @@ void vector<T>::traverse (void( *visit)(T&)){
 }
 
 #endif
+
