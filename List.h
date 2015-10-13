@@ -31,19 +31,22 @@ public:
 	void swap(ListNodePosi(T) &p1,ListNodePosi(T) &p2){ListNodePosi(T) tmp = p1;p1 = p2;p2 = tmp;};
 	bool valid(ListNodePosi(T) p);
 	int disodered()const;
-	ListNodePosi(T) find(T const&e){return find(e,_size,last());};
+	ListNodePosi(T) find(T const&e){return find(e,_size,last()-> succ);};
 	ListNodePosi(T) find(T const&e,int n,ListNodePosi(T) p);
 	ListNodePosi(T) insertAsFirst(T const&e);
 	ListNodePosi(T) insertAsLast (T const&e);
 	ListNodePosi(T) insertA(ListNodePosi(T) p,T const& e);
 	ListNodePosi(T) insertB(ListNodePosi(T) p,T const& e);
+	ListNodePosi(T) push_back(T const& e);
 	T remove(ListNodePosi(T) p);
 	void sort(ListNodePosi(T) p,int n);
-	void sort(){;sort(first(),_size);}
+	void sort(){sort(first(),_size);}
 	int deduplicate();
 	int uniquify();
 	void reverse();
-	void traverse(void(*)(T&));
+	void traverse(void(*)(T &));
+
+	void add_up(List<T> l2);
 
 };
 
@@ -93,9 +96,8 @@ int List<T>::disodered()const{
 
 template <typename T>
 ListNodePosi(T) List<T>::find(T const&e,int n,ListNodePosi(T) p){
-	for(int i = 0; i < _size;p = p -> pred,i++){
-		if(e == p -> data) return p;
-	}
+	while(0 < n--)
+		if( e == ( p = p->pred) -> data) return p;
 	return NULL;
 }
 
@@ -124,6 +126,11 @@ ListNodePosi(T) List<T>::insertB(ListNodePosi(T) p,T const& e){
 }
 
 template <typename T>
+ListNodePosi(T) List<T>::push_back(T const& e){
+	_size++;
+	return tail -> insertAsPred(e);
+}
+template <typename T>
 T List<T>::remove(ListNodePosi(T) p){
 	_size--;
 	T old_data = p -> data;
@@ -142,9 +149,9 @@ void List<T>::reverse(){
 }
 
 template <typename T>
-void List<T>::traverse(void(*)(T &visit)){
+void List<T>::traverse(void( *visit)(T &)){
 	for(ListNodePosi(T) p = head->succ; p != tail; p = p->succ)
-		visit ( p->data );
+		visit (p->data);
 }
 
 template <typename T>
@@ -156,7 +163,7 @@ template <typename T> //
 void List<T>::mergeSort (ListNodePosi(T) &p, int n ) {
    if ( n < 2 ) return; 
    int m = n >> 1; 
-   ListNodePosi(T) q = p; for ( int i = 0; i < m; i++ ) q = q->succ; 
+   ListNodePosi(T) q = p; for ( int i = 0; i < m; i++ ) q = q -> succ; 
    mergeSort ( p, m ); mergeSort ( q, n - m );
    merge ( p, m, *this, q, n - m ); 
 }
