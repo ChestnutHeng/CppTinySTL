@@ -35,13 +35,18 @@ A tiny stl for c++ to memorize data structures and algorithms.
 |traverse()|函数指针和函数对象的应用|
 
 
+
+
 ---
+
+
+
 ##List.h
 
 API:
 
 | API | Info |
-|:----------|:----------|
+|:---|:---|
 |Rank size() const |规模|
 |bool empty() const|判空|
 |T& operator[] ( Rank r ) const |重载，支持循秩访问（效率低）|
@@ -68,4 +73,34 @@ API:
 |int uniquify()|有序去重|
 |void reverse()|前后倒置（习题）|
 |void traverse ( void (* ) ( T& ) )|遍历，依次实施visit操作（函数指针，只读或局部性修改）|
+
+
+
+---
+##Stack.h
+
+API:
+|API|Info|
+|---|---|
+|bool empty()|return this stack is empty or not|
+|int size()|return the size of this stack|
+|void push(T const&e)|push an element into stack|
+|T pop()|pop an element out of stack|
+|T top()|return top element of stack|
+
+
+---
+
+
+##Queue.h
+
+API:
+
+|API|Info|
+|---|---|
+|size()|return _size|
+|empty()|return if empty or not|
+|void enqueue ( T const& e )|入队：尾部插入|
+|T dequeue()|出队：首部删除|
+|T& front()|返回队首|
 
