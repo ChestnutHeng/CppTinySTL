@@ -80,6 +80,7 @@ API:
 ##Stack.h
 
 API:
+
 |API|Info|
 |---|---|
 |bool empty()|return this stack is empty or not|
