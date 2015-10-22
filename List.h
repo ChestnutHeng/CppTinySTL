@@ -2,7 +2,7 @@
 #define LIST_H_
 
 #include "ListNode.h"
-
+#include <iostream>
 
 template <typename T>
 class List{
@@ -19,8 +19,8 @@ protected:
 
 public:
 	List(){init();}
-	List(List<T> const&L){}
-	List(List<T> const&L,Rank r,int n){}
+	List(List<T> const&L){init();for(int i = 0;i < L.size(); ++i) this->push_back(L[i]);}
+	List(List<T> const&L,Rank r,int n){init();for(int i = 0;i < n; ++i) this->push_back(L[r++]);}
 	~List(){clear();delete head;delete tail;};
 
 	Rank size() const{return _size;}
@@ -70,7 +70,7 @@ int List<T>::clear(){
 template <typename T>
 T &List<T>::operator[](Rank r)const{
 	ListNodePosi(T) p = first();
-	while(r-- > 0){			//  (0,n)
+	while(r-- > 0){			//  [0,n)
 		p = p -> succ;
 	}
 	return p -> data;
@@ -206,5 +206,5 @@ void List<T>::merge ( ListNodePosi(T) &p, int n, List<T>& L, ListNodePosi(T) q, 
    p = pp -> succ;
 }
 
-
 #endif
+
