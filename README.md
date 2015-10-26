@@ -105,3 +105,42 @@ API:
 |T dequeue()|出队：首部删除|
 |T& front()|返回队首|
 
+
+---
+
+##BinTree.h
+
+API:
+
+|API|INFO|
+|---|---|
+|int size() const |规模
+|bool empty() const |判空
+| BinNodePosi(T) root()|树根
+|BinNodePosi(T) insertAsRoot ( T const& e )|插入根节点
+|BinNodePosi(T) insertAsLC ( BinNodePosi(T) x, T const& e )|e作为x的左孩子（原无）插入
+|BinNodePosi(T) insertAsRC ( BinNodePosi(T) x, T const& e )|e作为x的右孩子（原无）插入
+|BinNodePosi(T) attachAsLC ( BinNodePosi(T) x, BinTree<T>* &T )|T作为x左子树接入
+|BinNodePosi(T) attachAsRC ( BinNodePosi(T) x, BinTree<T>* &T )|T作为x右子树接入
+| int remove ( BinNodePosi(T) x )|删除以位置x处节点为根的子树，返回该子树原先的规模
+|BinTree<T>* secede ( BinNodePosi(T) x )|将子树x从当前树中摘除，并将其转换为一棵独立子树
+|void travLevel ( VST& visit ) { if ( _root ) _root->travLevel ( visit )|层次遍历
+|void travPre ( VST& visit ) { if ( _root ) _root->travPre ( visit )|先序遍历
+|oid travIn ( VST& visit ) { if ( _root ) _root->travIn ( visit )|中序遍历
+|void travPost ( VST& visit ) { if ( _root ) _root->travPost ( visit )|后序遍历
+|bool operator < ( BinTree<T> const& t )|比较器（==,>,<,>=,<=）
+
+###Tips:
+|Function|Tips|
+|---|---|
+|travLevel()|把每层的节点依次压入队列|
+|travIn()|不断迭代到左侧最深叶子处(访问)，然后返回直接后继(访问)，再按本算法处理右子树|
+|travPre()|不断访问左孩子，把右孩子压入栈中，左侧到底后弹出栈顶，按本算法处理栈顶，直至为空|
+|travPost()|递归实现|
+
+
+---
+
+
+
+
