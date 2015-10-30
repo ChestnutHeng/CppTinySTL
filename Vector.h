@@ -7,11 +7,11 @@
 
 typedef int Rank;
 
-template <typename T> class vector
+template <typename T> class Vector
 {
 protected:
 	Rank rank;
-	int _size,_capacity;   //_size is vector's used size. _capacity is the real size
+	int _size,_capacity;   //_size is Vector's used size. _capacity is the real size
 	T * _elem;
 	Rank max(Rank lo,Rank hi);
 	Rank partition(Rank lo,Rank hi);
@@ -26,20 +26,21 @@ protected:
 	void swap(T &e1,T &e2);
 
 public:
-	vector(int n = 0,T ele = 0){
+	Vector(int n = 0,T ele = 0){
 		_elem = new T[_capacity = n<<1];
 		for(_size = 0; _size < n; _elem[_size++] = ele);
 		expand();
 	}
 	//defalt init
-	vector(const vector <T>& V){copyfrom(V._elem,0,V._size);}
-	~vector(){delete [] _elem;}
+	Vector(const Vector <T>& V){copyfrom(V._elem,0,V._size);}
+	~Vector(){delete [] _elem;}
 
 
 	int size(){return _size;};
 	T get(Rank rank){return _elem[rank];};
 	void put(Rank rank,T const&ele){_elem[rank] = ele;};
 	Rank insert(Rank rank,T const&ele);
+	void push_back(T const&ele);
 	void remove(Rank rank);
 	bool disordered();
 	Rank find(T const&ele,Rank lo,Rank hi);
@@ -58,7 +59,7 @@ public:
 
 
 template <typename T>
-void vector<T>::expand(){
+void Vector<T>::expand(){
 	if(_size < _capacity) return;
 	if(_capacity < DEFAULT_CAPACITY) _capacity = DEFAULT_CAPACITY;
 	T *oldelem = _elem;
@@ -70,7 +71,7 @@ void vector<T>::expand(){
 }
 
 template <typename T>
-void vector<T>::shrink(){
+void Vector<T>::shrink(){
 	if(_capacity < DEFAULT_CAPACITY << 1) return;
 	if(_size << 2 > _capacity) return;
 	T *oldelem = _elem;
@@ -83,7 +84,7 @@ void vector<T>::shrink(){
 }
 
 template <typename T>
-Rank vector<T>::insert(Rank rank,T const&ele){
+Rank Vector<T>::insert(Rank rank,T const&ele){
 	expand();
 	for(int i = _size++;i > rank; --i){
 		_elem[i] = _elem[i-1]; 
@@ -93,7 +94,12 @@ Rank vector<T>::insert(Rank rank,T const&ele){
 }
 
 template <typename T>
-void vector<T>::remove(Rank rank){
+void vector<T>::push_back(T const&ele){
+	insert(size(),ele);
+}
+
+template <typename T>
+void Vector<T>::remove(Rank rank){
 	for (int i = rank; i < _size; ++i){
 		_elem[i] = _elem[i+1];
 	}
@@ -102,7 +108,7 @@ void vector<T>::remove(Rank rank){
 }
 
 template <typename T>
-bool vector<T>::disordered(){
+bool Vector<T>::disordered(){
 	for(int i = 0;i < size;++i){
 		if(_elem[i] > _elem[i+1]) return false;
 	}
@@ -110,7 +116,7 @@ bool vector<T>::disordered(){
 }
 
 template <typename T>
-Rank vector<T>::search(T const&ele,Rank lo,Rank hi){
+Rank Vector<T>::search(T const&ele,Rank lo,Rank hi){
 	while(lo < hi){
 		Rank mid = (lo + hi) >> 1;
 		(ele < _elem[mid]) ? hi = mid : lo = mid + 1;
@@ -120,13 +126,13 @@ Rank vector<T>::search(T const&ele,Rank lo,Rank hi){
 
 
 template <typename T>
-Rank vector<T>::find(T const&ele,Rank lo,Rank hi){
+Rank Vector<T>::find(T const&ele,Rank lo,Rank hi){
 	while((lo < hi--) && (ele != _elem[hi]));
 	return hi;
 }
 
 template <typename T>
-Rank vector<T>::deduplicate(){
+Rank Vector<T>::deduplicate(){
 	Rank old_size = _size;
 	for(Rank i = 1;i < _size; ++i){
 		Rank tmp = find(_elem[i],0,i);
@@ -139,7 +145,7 @@ Rank vector<T>::deduplicate(){
 }
 
 template <typename T>
-Rank vector<T>::uniquify(){
+Rank Vector<T>::uniquify(){
 	Rank i = 0, j = 0;
 	while (++j < _size) 
 	   if ( _elem[i] != _elem[j] ) 
@@ -149,7 +155,7 @@ Rank vector<T>::uniquify(){
 }
 
 template <typename T>
-Rank vector<T>::max(Rank lo,Rank hi){
+Rank Vector<T>::max(Rank lo,Rank hi){
 	T tmp = _elem[lo++];
 	while(lo <= hi) {
 		if(tmp < _elem[lo]) tmp = _elem[lo++];
@@ -157,14 +163,14 @@ Rank vector<T>::max(Rank lo,Rank hi){
 }
 
 template <typename T>
-void vector<T>::swap(T &e1,T &e2){
+void Vector<T>::swap(T &e1,T &e2){
 	T tmp(e1);
 	e1 = e2;
 	e2 = tmp;
 }
 
 template <typename T>
-Rank vector<T>::partition ( Rank lo, Rank hi ) {
+Rank Vector<T>::partition ( Rank lo, Rank hi ) {
    swap ( _elem[lo], _elem[lo + rand() % ( hi - lo + 1 ) ]); 
    T pivot = _elem[lo]; 
    int mi = lo;
@@ -176,7 +182,7 @@ Rank vector<T>::partition ( Rank lo, Rank hi ) {
 }
 
 template <typename T>
-void vector<T>::sort(Rank lo, Rank hi){ 
+void Vector<T>::sort(Rank lo, Rank hi){ 
    if (hi - lo < 2) return;
    Rank mi = partition(lo,hi - 1);
    sort(lo, mi);
@@ -184,7 +190,7 @@ void vector<T>::sort(Rank lo, Rank hi){
 }
 
 template <typename T>
-void vector<T>::traverse (void( *visit)(T&)){
+void Vector<T>::traverse (void( *visit)(T&)){
    for(int i = 0; i < _size; i++) visit(_elem[i]);
 }
 
