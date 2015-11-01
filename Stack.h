@@ -12,10 +12,9 @@ private:
 	Rank _size;
 	Rank _capacity;
 public:
-	Stack(int n = 0,T ele = 0){
+	Stack(){
 		_elem = new T[_capacity = DEFAULT_CAPACITY << 1];
-		for(_size = 0;_size < n;_size++)
-			_elem[_size] = ele;
+		_size = 0;
 		expand();
 	};
 

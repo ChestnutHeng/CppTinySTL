@@ -1,7 +1,7 @@
 #ifndef _QUEUE_H_
 #define _QUEUE_H_
 
-#include <cstddef>
+#include <stddef.h>
 
 typedef int Rank;
 

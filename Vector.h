@@ -3,7 +3,7 @@
 
 #define DEFAULT_CAPACITY 3
 
-#include <cstdlib>
+#include <stdlib.h>
 
 typedef int Rank;
 
@@ -15,7 +15,7 @@ protected:
 	T * _elem;
 	Rank max(Rank lo,Rank hi);
 	Rank partition(Rank lo,Rank hi);
-	void copyfrom(T const*A,Rank lo,Rank hi);
+	void copyFrom(T const*A,Rank lo,Rank hi);
 	void expand();
 	void shrink();
 	void bubbleSort(Rank lo,Rank hi);
@@ -26,21 +26,34 @@ protected:
 	void swap(T &e1,T &e2);
 
 public:
-	Vector(int n = 0,T ele = 0){
-		_elem = new T[_capacity = n<<1];
+	Vector(){
+		_elem = new T[_capacity = DEFAULT_CAPACITY << 1];
+		_size = 0;
+		expand();
+	}//defalt init
+	Vector(T ele){
+		_elem = new T[_capacity = DEFAULT_CAPACITY << 1];
+		for(_size = 0; _size < DEFAULT_CAPACITY; _elem[_size++] = ele);
+		expand();
+	}
+	Vector(int n,T ele){
+		_elem = new T[_capacity = n << 1];
 		for(_size = 0; _size < n; _elem[_size++] = ele);
 		expand();
 	}
-	//defalt init
-	Vector(const Vector <T>& V){copyfrom(V._elem,0,V._size);}
+	Vector(const Vector <T>& V){copyFrom(V._elem,0,V._size);}
+	Vector(Vector<T>const& V,Rank lo,Rank hi){copyFrom(V._elem,lo,hi);}
+	Vector(Vector<T>& V,Rank lo,Rank hi){copyFrom(V._elem,lo,hi);}
 	~Vector(){delete [] _elem;}
 
 
 	int size(){return _size;};
+	void clear(){_size = 0;shrink();}
 	T get(Rank rank){return _elem[rank];};
 	void put(Rank rank,T const&ele){_elem[rank] = ele;};
 	Rank insert(Rank rank,T const&ele);
 	void push_back(T const&ele);
+	T pop_back(){return _elem[_size - 1];}
 	void remove(Rank rank);
 	bool disordered();
 	Rank find(T const&ele,Rank lo,Rank hi);
@@ -53,10 +66,18 @@ public:
 	void sort(){sort(0,_size);}
 	void traverse (void( *visit)(T&));
 	T& operator[] (Rank r) const{return _elem[r];}
+	void operator = (Vector<T> V){copyFrom(V._elem,0,V.size());}  //copy vector to another vector
 
 
 };
 
+template <typename T>
+void Vector<T>::copyFrom(T const* A,Rank lo,Rank hi){
+   _elem = new T[_capacity = 2 * ( hi - lo )];
+   _size = 0;
+   while (lo < hi)
+      _elem[_size++] = A[lo++];
+}
 
 template <typename T>
 void Vector<T>::expand(){
@@ -94,7 +115,7 @@ Rank Vector<T>::insert(Rank rank,T const&ele){
 }
 
 template <typename T>
-void vector<T>::push_back(T const&ele){
+void Vector<T>::push_back(T const&ele){
 	insert(size(),ele);
 }
 
