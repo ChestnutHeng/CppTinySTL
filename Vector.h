@@ -3,12 +3,33 @@
 
 #define DEFAULT_CAPACITY 3
 
-#include <stdlib.h>
+#include <cstdlib>
 
 typedef int Rank;
 
 template <typename T> class Vector
 {
+public:
+	int size(){return _size;};
+	void clear(){_size = 0;shrink();}
+	T get(Rank rank){return _elem[rank];};
+	void put(Rank rank,T const&ele){_elem[rank] = ele;};
+	Rank insert(Rank rank,T const&ele);
+	void push_back(T const&ele);
+	T pop_back(){return _elem[_size - 1];}
+	void remove(Rank rank);
+	bool disordered();
+	Rank find(T const&ele,Rank lo,Rank hi);
+	Rank find(T const&ele){find(ele,0,_size);};
+	Rank search(T const&ele,Rank lo,Rank hi);
+	Rank search(T const&ele){search(ele,0,_size);}
+	Rank deduplicate();
+	Rank uniquify();
+	void sort(Rank lo,Rank hi);
+	void sort(){sort(0,_size);}
+	void traverse (void( *visit)(T&));
+	T& operator[] (Rank r) const{return _elem[r];}
+	
 protected:
 	Rank rank;
 	int _size,_capacity;   //_size is Vector's used size. _capacity is the real size
@@ -31,6 +52,7 @@ public:
 		_size = 0;
 		expand();
 	}//defalt init
+
 	Vector(T ele){
 		_elem = new T[_capacity = DEFAULT_CAPACITY << 1];
 		for(_size = 0; _size < DEFAULT_CAPACITY; _elem[_size++] = ele);
@@ -41,38 +63,35 @@ public:
 		for(_size = 0; _size < n; _elem[_size++] = ele);
 		expand();
 	}
-	Vector(const Vector <T>& V){copyFrom(V._elem,0,V._size);}
-	Vector(Vector<T>const& V,Rank lo,Rank hi){copyFrom(V._elem,lo,hi);}
-	Vector(Vector<T>& V,Rank lo,Rank hi){copyFrom(V._elem,lo,hi);}
+	Vector(const Vector <T>& V){
+		_elem = NULL;
+		copyFrom(V._elem,0,V._size);
+	}
+	Vector(Vector<T>const& V,Rank lo,Rank hi){
+		_elem = NULL;
+		copyFrom(V._elem,lo,hi);
+	}
+	Vector(Vector<T>& V,Rank lo,Rank hi){
+		_elem = NULL;
+		copyFrom(V._elem,lo,hi);
+	}
 	~Vector(){delete [] _elem;}
 
 
-	int size(){return _size;};
-	void clear(){_size = 0;shrink();}
-	T get(Rank rank){return _elem[rank];};
-	void put(Rank rank,T const&ele){_elem[rank] = ele;};
-	Rank insert(Rank rank,T const&ele);
-	void push_back(T const&ele);
-	T pop_back(){return _elem[_size - 1];}
-	void remove(Rank rank);
-	bool disordered();
-	Rank find(T const&ele,Rank lo,Rank hi);
-	Rank find(T const&ele){find(ele,0,_size);};
-	Rank search(T const&ele,Rank lo,Rank hi);
-	Rank search(T const&ele){search(ele,0,_size);}
-	Rank deduplicate();
-	Rank uniquify();
-	void sort(Rank lo,Rank hi);
-	void sort(){sort(0,_size);}
-	void traverse (void( *visit)(T&));
-	T& operator[] (Rank r) const{return _elem[r];}
-	void operator = (Vector<T> V){copyFrom(V._elem,0,V.size());}  //copy vector to another vector
 
+	Vector<T>& operator = (const Vector<T> &V){
+		if(this == &V) return *this;
+		Vector<T> t_V = const_cast<Vector<T>&>(V);
+		copyFrom(t_V._elem,0,t_V.size());
+		return *this;
+	}  //copy vector to another vector
 
 };
 
 template <typename T>
 void Vector<T>::copyFrom(T const* A,Rank lo,Rank hi){
+	if (_elem != NULL)
+		delete[] _elem;
    _elem = new T[_capacity = 2 * ( hi - lo )];
    _size = 0;
    while (lo < hi)
@@ -101,7 +120,6 @@ void Vector<T>::shrink(){
 		_elem[i] = oldelem[i];
 	}
 	delete [] oldelem;
-
 }
 
 template <typename T>

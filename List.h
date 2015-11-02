@@ -1,7 +1,7 @@
 #ifndef LIST_H_
 #define LIST_H_
 
-#include <stddef.h>
+#include <cstddef>
 
 #define ListNodePosi(T) ListNode<T>*
 
@@ -40,37 +40,19 @@ ListNodePosi(T) ListNode<T>::insertAsSucc(T const&e){
 
 template <typename T>
 class List{
-private:
-	int _size;
-	ListNodePosi(T) head;
-	ListNodePosi(T) tail;
-protected:
-	void init();
-	int clear();
-	void copyNodes(ListNodePosi(T),int);
-	void merge(ListNodePosi(T)&,int,List<T>&,ListNodePosi(T),int);
-	void mergeSort(ListNodePosi(T)&,int);
-
 public:
-	List(){init();}
-	List(List<T> const&L){init();for(int i = 0;i < L.size(); ++i) this->push_back(L[i]);}
-	List(List<T> const&L,Rank r,int n){init();for(int i = 0;i < n; ++i) this->push_back(L[r++]);}
-	~List(){clear();delete head;delete tail;};
-
+	int clear();
 	Rank size() const{return _size;}
 	bool empty() const{return (_size <= 0);}
-	T &operator[](Rank r)const;
+	T &operator [] (Rank r)const;
+	List &operator = (List<T> const&L);
 	ListNodePosi(T) first()const{return head -> succ;}
 	ListNodePosi(T) last()const{return tail -> pred;}
-	void swap(ListNodePosi(T) &p1,ListNodePosi(T) &p2){ListNodePosi(T) tmp = p1;p1 = p2;p2 = tmp;};
+	void swap(ListNodePosi(T) &p1,ListNodePosi(T) &p2);
 	bool valid(ListNodePosi(T) p);
 	int disodered()const;
 	ListNodePosi(T) find(T const&e){return find(e,_size,last()-> succ);};
 	ListNodePosi(T) find(T const&e,int n,ListNodePosi(T) p);
-	ListNodePosi(T) insertAsFirst(T const&e);
-	ListNodePosi(T) insertAsLast (T const&e);
-	ListNodePosi(T) insertA(ListNodePosi(T) p,T const& e);
-	ListNodePosi(T) insertB(ListNodePosi(T) p,T const& e);
 	ListNodePosi(T) push_back(T const& e);
 	T remove(ListNodePosi(T) p);
 	void sort(ListNodePosi(T) p,int n);
@@ -79,7 +61,38 @@ public:
 	int uniquify();
 	void reverse();
 	void traverse(void(*)(T &));
+private:
+	int _size;
+	ListNodePosi(T) head;
+	ListNodePosi(T) tail;
+protected:
+	void init();
+	void copyNodes(ListNodePosi(T),int);
+	void merge(ListNodePosi(T)&,int,List<T>&,ListNodePosi(T),int);
+	void mergeSort(ListNodePosi(T)&,int);
 
+public:
+	List(){init();}
+	List(List<T> const&L){
+		init();
+		for(int i = 0;i < L.size(); ++i)
+	 		this->push_back(L[i]);
+	}
+	List(List<T> const&L,Rank r,int n){
+		init();
+		for(int i = 0;i < n; ++i)
+			this->push_back(L[r++]);
+	}
+	~List(){
+		clear();
+		delete head;
+		delete tail;
+	}
+	
+	ListNodePosi(T) insertAsFirst(T const&e);
+	ListNodePosi(T) insertAsLast (T const&e);
+	ListNodePosi(T) insertA(ListNodePosi(T) p,T const& e);
+	ListNodePosi(T) insertB(ListNodePosi(T) p,T const& e);
 };
 
 template <typename T>
@@ -108,6 +121,23 @@ T &List<T>::operator[](Rank r)const{
 		p = p -> succ;
 	}
 	return p -> data;
+}
+
+template <typename T>
+void List<T>::swap(ListNodePosi(T) &p1,ListNodePosi(T) &p2){
+	ListNodePosi(T) tmp = p1;
+	p1 = p2;
+	p2 = tmp;
+}
+
+template <typename T>
+List<T> &List<T>::operator = (List<T> const&L){
+	if(this == &L)
+		return *this;
+	this -> clear();
+	for(int i = 0;i < L.size(); ++i)
+ 		this->push_back(L[i]);
+ 	return *this;
 }
 template <typename T>
 bool List<T>::valid(ListNodePosi(T) p){
