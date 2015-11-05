@@ -166,15 +166,7 @@ void travPost_I(BinNodePosi(T) x, VST& visit){
 template <typename T>
 class BinTree
 {
-private:
-	int _size;
-	BinNodePosi(T) _root;
-	virtual int updateHeight(BinNodePosi(T) x);
-	int updateHeightAbove(BinNodePosi(T) x);
 public:
-	BinTree():_size(0),_root(NULL){}
-	~BinTree(){if (_size > 0) remove(_root);}
-
 	int size(){return _size;}
 	bool empty(){return !_root;}
 	int height(){return _root -> height;}
@@ -182,8 +174,9 @@ public:
 	BinNodePosi(T) root() const{return _root;}
 	BinNodePosi(T) insertAsRoot(T const&e){_size = 1; return _root = new BinNode<T>(e);}
 	BinNodePosi(T) insertAsLC(BinNodePosi(T) x,T const&e){_size++; x -> insertAsLC(e);updateHeightAbove(x);return x -> lc;}
-	BinNodePosi(T) insertAsRC(BinNodePosi(T) x,T const&e){_size++; x -> insertAsRC(e);updateHeightAbove(x);return x -> rc;};
-
+	BinNodePosi(T) insertAsRC(BinNodePosi(T) x,T const&e){_size++; x -> insertAsRC(e);updateHeightAbove(x);return x -> rc;}
+	BinNodePosi(T) attachAsLC(BinNodePosi(T) x,BinTree<T>*&S);
+	BinNodePosi(T) attachAsRC(BinNodePosi(T) x,BinTree<T>*&S);
 
 	template <typename VST>
     void travLevel(VST& visit) {if(_root)_root -> travLevel(visit);}
@@ -194,6 +187,16 @@ public:
     template <typename VST>
     void travPost(VST& visit) {if(_root)_root -> travPost(visit);}
 
+private:
+	int _size;
+	BinNodePosi(T) _root;
+protected:
+	virtual int updateHeight(BinNodePosi(T) x);
+	int updateHeightAbove(BinNodePosi(T) x);
+public:
+	BinTree():_size(0),_root(NULL){}
+	~BinTree(){if (_size > 0) remove(_root);}
+	
 };
 
 template <typename T>
@@ -212,6 +215,35 @@ static int removeAt (BinNodePosi(T) x) {
    //release ( x->data );
    delete x;
    return n;
+}
+
+
+template <typename T>
+BinNodePosi(T) BinTree<T>::attachAsLC(BinNodePosi(T) x,BinTree<T>*&S){
+	if(S -> root){
+		x -> lc = S -> root;
+		x -> lc -> parent = x;
+	}
+	_size += S.size();
+	S -> root = NULL;
+	S -> _size = 0;
+	remove(S);
+	S =NULL;
+	return x;
+}
+
+template <typename T>
+BinNodePosi(T) BinTree<T>::attachAsRC(BinNodePosi(T) x,BinTree<T>*&S){
+	if(S -> root){
+		x -> rc = S -> root;
+		x -> rc -> parent = x;
+	}
+	_size += S.size();
+	S -> root = NULL;
+	S -> _size = 0;
+	remove(S);
+	S =NULL;
+	return x;
 }
 
 template <typename T>
