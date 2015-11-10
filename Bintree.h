@@ -14,7 +14,9 @@
 #define FromParentTo(x) (IsRoot(x)? _root : (IsLChild(x) ? (x).parent -> lc : (x).parent -> rc))
 #define IsLeaf(x) (!HasChild(x))
 
-#include <stddef.h>
+#ifndef NULL 
+	#define NULL 0
+#endif
 
 #include "Queue.h"
 #include "Stack.h"

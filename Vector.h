@@ -3,7 +3,11 @@
 
 #define DEFAULT_CAPACITY 3
 
-#include <cstdlib>
+#ifndef NULL 
+	#define NULL 0
+#endif
+
+#include <stdlib.h>
 
 typedef int Rank;
 
@@ -17,7 +21,7 @@ public:
 	Rank insert(Rank rank,T const&ele);
 	void push_back(T const&ele);
 	T pop_back(){return _elem[_size - 1];}
-	void remove(Rank rank);
+	T remove(Rank rank);
 	bool disordered();
 	Rank find(T const&ele,Rank lo,Rank hi);
 	Rank find(T const&ele){find(ele,0,_size);};
@@ -138,12 +142,14 @@ void Vector<T>::push_back(T const&ele){
 }
 
 template <typename T>
-void Vector<T>::remove(Rank rank){
+T Vector<T>::remove(Rank rank){
+	T old_e = _elem[rank];
 	for (int i = rank; i < _size; ++i){
 		_elem[i] = _elem[i+1];
 	}
 	_size--;
 	shrink();
+	return old_e;
 }
 
 template <typename T>

@@ -1,7 +1,9 @@
 #ifndef LIST_H_
 #define LIST_H_
 
-#include <cstddef>
+#ifndef NULL 
+	#define NULL 0
+#endif
 
 #define ListNodePosi(T) ListNode<T>*
 
@@ -55,6 +57,7 @@ public:
 	ListNodePosi(T) find(T const&e,int n,ListNodePosi(T) p);
 	ListNodePosi(T) push_back(T const& e);
 	T remove(ListNodePosi(T) p);
+	T erase(Rank r);
 	void sort(ListNodePosi(T) p,int n);
 	void sort(){sort(first(),_size);}
 	int deduplicate();
@@ -200,6 +203,15 @@ T List<T>::remove(ListNodePosi(T) p){
 	p -> succ -> pred = p -> pred;
 	delete p;
 	return old_data;
+}
+
+template <typename T>
+T List<T>::erase(Rank r){
+	ListNodePosi(T) p = first();
+	while(r-- > 0){			//  [0,n)
+		p = p -> succ;
+	}
+	remove(p);
 }
 
 template <typename T>
