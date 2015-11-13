@@ -6,6 +6,8 @@
 #include "Queue.h"
 #include "Vector.h"
 
+#define MIN(x,y) (x) < (y) ? (x) : (y)
+
 typedef enum{UNDISCOVERED,DISCOVERED,VISITED}VStatus;
 typedef enum{UNDETERMINED,TREE,CROSS,FORWARD,BACKWORD}EType;
 
@@ -18,18 +20,18 @@ public:
 	int getCount_e(){return count_v;}
 	void setCount_e(int e){count_e = e;}
 
-	void BFS(int,int&);
-	void DFS(int,int&);
-	void BCC(int,int&,Stack<int>&);
-	void TSort(int,int&,Stack<Tv>*);
+	virtual void BFS(int,int&);
+	virtual void DFS(int,int&);
+	virtual void BCC(int,int&,Stack<int>&);
+	virtual bool TSort(int,int&,Stack<Tv>*);
 
 	template <typename PU>
 	void PFS(int,PU);
 
 	virtual void bfs(int);
 	virtual void dfs(int);
-	//virtual void bcc(int) = 0;
-	//virtual Stack<Tv>* tSort(int) = 0;
+	virtual void bcc(int);
+	virtual Stack<Tv>* tSort(int);
 	virtual void prim(int);
 	virtual void dijkstra(int);
 
@@ -187,6 +189,97 @@ void Graph<Tv, Te>::prim (int s) {
          		s = j;
         }
     }
+}
+
+template <typename Tv,typename Te>
+Stack<Tv>* Graph<Tv, Te>::tSort(int s){		//[0,n)
+	this -> reset();
+	int clock = 0;
+	int v = s;
+	Stack<Tv> *S = new Stack<Tv>;
+	do{
+		if(status(v) == UNDISCOVERED)
+			if(!TSort(v,clock,S)){
+				while(!S -> empty())
+					S -> pop();
+				break;
+			}
+		v++;
+		v = v % this -> getCount_v();
+	}while(s != v);
+	return S;
+}
+
+template <typename Tv,typename Te>
+bool Graph<Tv, Te>::TSort(int v,int &clock,Stack<Tv> *S){
+	dTime(v) = ++clock;
+	status(v) = DISCOVERED;
+	for (int u = firstNbr(v); u > -1; u = nextNbr(v,u))
+	{
+		switch(status(u)){
+			case UNDISCOVERED:
+			parent(u) = v;
+			type(v,u) = TREE;
+			if(!TSort(u,clock,S))
+				return false;
+			break;
+			case DISCOVERED:
+				type(v,u) = BACKWORD;
+				return false;
+			case VISITED:
+				type(v,u) = (dTime(v) < dTime(u) ? FORWARD : CROSS);
+				break;
+		}
+	}
+	status(v) = VISITED;
+	S -> push(vertex(v));
+	return true;
+}
+
+template <typename Tv,typename Te>
+void Graph<Tv, Te>::bcc(int s){
+	this -> reset();
+	int clock = 0;
+	int v = s;
+	Stack<int> S;
+	do{
+		if(status(v) == DISCOVERED){
+			BCC(v,clock,S);
+			S.pop();
+		}
+	}while(s != (v = (++v % this -> getCount_v())));
+}
+
+template <typename Tv,typename Te>
+void Graph<Tv, Te>::BCC(int v,int &clock,Stack<int>& S){
+	fTime(v) = dTime(v) = ++clock;
+	status(v) = DISCOVERED;
+	S.push(v);
+	for (int u = firstNbr(v); u > -1; u = nextNbr(v,u))
+	{
+		switch(status(u)){
+			case UNDISCOVERED:
+				parent(u) = v;
+				type(v,u) = TREE;
+				BCC(u,clock,S);
+				if(fTime(u) < dTime(v))
+						fTime(v) = MIN(fTime(v),fTime(u));
+				else{
+					while(v != S.pop()); ///cout
+					S.push(v);
+				}
+			break;
+			case DISCOVERED:
+				type(v,u) = BACKWORD;
+				if(u != parent(v))
+					fTime(v) = MIN(fTime(v),dTime(u));
+				break;
+			case VISITED:
+				type(v,u) = (dTime(v) < dTime(u) ? FORWARD : CROSS);
+				break;
+		}
+	}
+	status(v) = VISITED;
 }
 
 //GraphMartrix
