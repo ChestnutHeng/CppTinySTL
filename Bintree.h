@@ -14,9 +14,7 @@
 #define FromParentTo(x) (IsRoot(x)? _root : (IsLChild(x) ? (x).parent -> lc : (x).parent -> rc))
 #define IsLeaf(x) (!HasChild(x))
 
-#ifndef NULL 
-	#define NULL 0
-#endif
+#include <stddef.h>
 
 #include "Queue.h"
 #include "Stack.h"
@@ -189,14 +187,15 @@ public:
     template <typename VST>
     void travPost(VST& visit) {if(_root)_root -> travPost(visit);}
 
-private:
+protected:
 	int _size;
 	BinNodePosi(T) _root;
-protected:
+
 	virtual int updateHeight(BinNodePosi(T) x);
 	int updateHeightAbove(BinNodePosi(T) x);
 public:
 	BinTree():_size(0),_root(NULL){}
+	BinTree(int s,BinNode<T> *r):_size(s),_root(r){}
 	~BinTree(){if (_size > 0) remove(_root);}
 	
 };
