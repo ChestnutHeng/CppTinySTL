@@ -15,11 +15,10 @@
 #define IsLeaf(x) (!HasChild(x))
 
 #include <stddef.h>
+#include <iostream>
 
 #include "Queue.h"
 #include "Stack.h"
-
-
 
 typedef enum{RB_RED,RB_BLACK}RBColor;
 
@@ -38,6 +37,7 @@ struct BinNode
 	parent(NULL),lc(NULL),rc(NULL),height(0),npl(1),color(RB_RED){}
 	BinNode(T e,BinNodePosi(T) p = NULL,BinNodePosi(T) lc = NULL,BinNodePosi(T) rc = NULL,int h = 0,int l = 1,RBColor c = RB_RED):
 	data(e),parent(p),lc(lc),rc(rc),height(h),npl(l),color(c){}
+	BinNode(const BinNode<T> &n):data(n.data),parent(n.parent),lc(n.lc),rc(n.rc),height(n.height),npl(n.npl),color(n.color){}
 
 
 	int size();
@@ -53,6 +53,10 @@ struct BinNode
 	void travIn(VST& visit){travIn_I (this,visit);}
 	template<typename VST>
 	void travPost(VST& visit){travPost_I (this,visit);}
+
+	void dbgPrint() {
+		dbgPrintImpl(this);
+	}
 
 	bool operator < (BinNode const&e){return data < e.data;}
 	bool operator <= (BinNode const&e){return data <= e.data;}
@@ -162,6 +166,27 @@ void travPost_I(BinNodePosi(T) x, VST& visit){
 	}
 }
 
+template <typename T>
+void dbgPrintImpl_Ex(BinNodePosi(T) x, int level) {
+	if (HasRChild(*x)) {
+		dbgPrintImpl_Ex(x->rc, level + 1);
+	}
+
+	for (int i = 0; i < level * 4; ++i) {
+		std::cout << " ";
+	}
+	std::cout << x->data << std::endl;
+
+	if (HasLChild(*x)) {
+		dbgPrintImpl_Ex(x->lc, level + 1);
+	}
+}
+
+template <typename T>
+void dbgPrintImpl(BinNodePosi(T) x) {
+	std::cout << std::endl;
+	dbgPrintImpl_Ex(x, 0);
+}
 
 template <typename T>
 class BinTree
@@ -186,6 +211,8 @@ public:
     void travIn(VST& visit) {if(_root)_root -> travIn(visit);}
     template <typename VST>
     void travPost(VST& visit) {if(_root)_root -> travPost(visit);}
+
+    void dbgPrint() {if (_root) _root->dbgPrint();}
 
 protected:
 	int _size;

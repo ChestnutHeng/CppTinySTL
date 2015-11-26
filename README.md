@@ -5,6 +5,7 @@ Tags : Git_Readme
 A tiny stl for c++ to memorize data structures and algorithms.
 
 ##Vector.h
+Vector&lt; typename Te&gt;value;
 ###API
 
 | API | Info |
@@ -35,13 +36,13 @@ A tiny stl for c++ to memorize data structures and algorithms.
 |traverse()|函数指针和函数对象的应用|
 
 
-
-
 ---
 
 
 
 ##List.h
+
+List&lt; typename Te&gt;value;
 
 API:
 
@@ -78,6 +79,11 @@ API:
 
 ---
 ##Stack.h
+Stack&lt; typename Te&gt;value;
+*MinStack&lt; typename Te&gt;value;
+*MaxStack&lt; typename Te&gt;value;
+*MinQueue&lt; typename Te&gt;value;
+*MaxQueuek&lt; typename Te&gt;value;
 
 API:
 
@@ -88,13 +94,16 @@ API:
 |void push(T const&e)|push an element into stack|
 |T pop()|pop an element out of stack|
 |T top()|return top element of stack|
+|T max()|*return max element of stack|
+|T min()|*return min element of stack|
+*in MaxStack.h
 
 
 ---
 
 
 ##Queue.h
-
+Queue&lt; typename Te&gt;value;
 API:
 
 |API|Info|
@@ -109,9 +118,8 @@ API:
 ---
 
 ##BinTree.h
-
+Bintree&lt; typename Te&gt;value;
 API:
-
 |API|INFO|
 |---|---|
 |int size() const |规模
@@ -129,6 +137,7 @@ API:
 |oid travIn ( VST& visit ) { if ( _root ) _root->travIn ( visit )|中序遍历
 |void travPost ( VST& visit ) { if ( _root ) _root->travPost ( visit )|后序遍历
 |bool operator < ( BinTree<T> const& t )|比较器（==,>,<,>=,<=）
+|void dbgPrint()|打印二叉树（竖着看）
 
 ###Tips:
 |Function|Tips|
@@ -141,8 +150,11 @@ API:
 
 ---
 
-###Graph.h
-API:
+##Graph.h
+GraphList&lt; typename Tv, typename Te &gt;value;
+GraphMatrix&lt; typename Tv, typename Te &gt;value;
+
+###API:
 |API|INFO|
 |---|---|
 | void BFS ( int, int& )|（连通域）广度优先搜索算法
@@ -179,5 +191,17 @@ API:
 
 ---
 
-
+##BSTree.h
+BSTree &lt; typename T &gt; value;
+###API:
+|API|INFO|
+|---|---|
+|virtual BinNodePosi(T) &search(const T&e)|搜索
+|virtual BinNodePosi(T) insert(const T&e)|插入
+|virtual bool remove(const T&e)|删除
+AVLTree &lt; typename T &gt; value;
+|API|INFO|
+|---|---|
+|BinNodePosi(T) insert (const T&e)|插入
+|bool remove(const T &e)|删除
 
