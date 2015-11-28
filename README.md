@@ -205,3 +205,28 @@ AVLTree &lt; typename T &gt; value;
 |BinNodePosi(T) insert (const T&e)|插入
 |bool remove(const T &e)|删除
 
+
+---
+
+##Time.h
+TIME t1;
+###API:
+|API|INFO|
+|---|---|
+|TIME(const TIME &t)|拷贝构造函数
+|TIME operator =(const TIME &t)|等号重载
+|TIME operator - (const TIME &d)|减号重载
+|void print()|打印时间
+|void set_time()|设置时间为当前时间
+
+###Ex.
+```
+TIME t1,t2,t3;
+t1.set_time();
+//...comments...
+t2.set_time();
+t3 = t2 - t1;
+t3.print();
+```
+
+
