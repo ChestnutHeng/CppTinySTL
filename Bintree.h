@@ -52,11 +52,11 @@ struct BinNode
 	void travIn(VST& visit){travIn_I (this,visit);}
 	template<typename VST>
 	void travPost(VST& visit){travPost_I (this,visit);}
-
+#ifdef LIB_DEBUG
 	void dbgPrint() {
 		dbgPrintImpl(this);
 	}
-
+#endif
 	bool operator < (BinNode const&e){return data < e.data;}
 	bool operator <= (BinNode const&e){return data <= e.data;}
 	bool operator > (BinNode const&e){return data > e.data;}
@@ -65,7 +65,7 @@ struct BinNode
 };
 
 template <typename T>
-BinNodePosi(T) BtinNode<T>::succ(){
+BinNodePosi(T) BinNode<T>::succ(){
 	BinNodePosi(T) s = this;
 	if (rc){
    		s = rc; 
@@ -164,7 +164,7 @@ void travPost_I(BinNodePosi(T) x, VST& visit){
 		visit(x -> data);
 	}
 }
-
+#ifdef LIB_DEBUG
 template <typename T>
 void dbgPrintImpl_Ex(BinNodePosi(T) x, int level) {
 	if (HasRChild(*x)) {
@@ -186,7 +186,7 @@ void dbgPrintImpl(BinNodePosi(T) x) {
 	std::cout << std::endl;
 	dbgPrintImpl_Ex(x, 0);
 }
-
+#endif
 template <typename T>
 class BinTree
 {
