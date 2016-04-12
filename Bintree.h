@@ -15,7 +15,6 @@
 #define IsLeaf(x) (!HasChild(x))
 
 #include <stddef.h>
-#include <iostream>
 
 #include "Queue.h"
 #include "Stack.h"
@@ -66,16 +65,16 @@ struct BinNode
 };
 
 template <typename T>
-BinNodePosi(T) BinNode<T>::succ(){
+BinNodePosi(T) BtinNode<T>::succ(){
 	BinNodePosi(T) s = this;
 	if (rc){
    		s = rc; 
-    	while (HasLChild(*s)) 
-    		s = s -> lc; 
-    }else{
-    	while(IsRChild(*s))
-    		s = s -> parent;
-    	s = s -> parent;
+		while (HasLChild(*s)) 
+			s = s -> lc; 
+	}else{
+		while(IsRChild(*s))
+			s = s -> parent;
+		s = s -> parent;
  	}
   	return s;
 }
@@ -109,9 +108,9 @@ void travLevel_I (BinNodePosi(T) x,VST& visit) {
    Queue <BinNodePosi(T)> Q; 
    Q.enqueue (x);
    while ( !Q.empty() ) { 
-      x = Q.dequeue(); visit ( x->data ); 
-      if (HasLChild ( *x )) Q.enqueue ( x->lc ); 
-      if (HasRChild ( *x )) Q.enqueue ( x->rc );
+	  x = Q.dequeue(); visit ( x->data ); 
+	  if (HasLChild ( *x )) Q.enqueue ( x->lc ); 
+	  if (HasRChild ( *x )) Q.enqueue ( x->rc );
    }
 }
 
@@ -204,15 +203,15 @@ public:
 	BinNodePosi(T) attachAsRC(BinNodePosi(T) x,BinTree<T>*&S);
 
 	template <typename VST>
-    void travLevel(VST& visit) {if(_root)_root -> travLevel(visit);}
-    template <typename VST>
-    void travPre(VST& visit) {if(_root)_root -> travPre(visit);}
-    template <typename VST>
-    void travIn(VST& visit) {if(_root)_root -> travIn(visit);}
-    template <typename VST>
-    void travPost(VST& visit) {if(_root)_root -> travPost(visit);}
+	void travLevel(VST& visit) {if(_root)_root -> travLevel(visit);}
+	template <typename VST>
+	void travPre(VST& visit) {if(_root)_root -> travPre(visit);}
+	template <typename VST>
+	void travIn(VST& visit) {if(_root)_root -> travIn(visit);}
+	template <typename VST>
+	void travPost(VST& visit) {if(_root)_root -> travPost(visit);}
 
-    void dbgPrint() {if (_root) _root->dbgPrint();}
+	void dbgPrint() {if (_root) _root->dbgPrint();}
 
 protected:
 	int _size;
