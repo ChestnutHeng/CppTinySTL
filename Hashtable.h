@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Bintree.h"
+
 #ifndef NULL
 	#define NULL 0
 #endif
@@ -48,8 +49,7 @@ public:
 	}
 	~HashLinkList(){
 		HashLinkNode<Key,Value> *tra = head;
-		HashLinkNode<Key,Value> *tmp = tra -> next;
-		tmp -> next = NULL;
+		HashLinkNode<Key,Value> *tmp = head -> next;
 		while(tra){
 			tmp = tra -> next;
 			delete tra;
@@ -58,6 +58,10 @@ public:
 	}
 
 	void insert(Key_Value_couple<Key,Value> data){
+		if(_size == 0){
+			head -> data = data;
+			_size++;
+		}
 		HashLinkNode<Key,Value> *new_node = new HashLinkNode<Key,Value>();
 		new_node -> data.key = data.key;
 		new_node -> data.value = data.value;
@@ -80,6 +84,7 @@ public:
 	bool found(Key target){
 		HashLinkNode<Key,Value> *tra = this -> head;
 		while(tra != tail){
+		std::cout << tra -> data.key<< std::endl;
 			if(tra -> data.key == target){
 				return true;
 			}
@@ -131,7 +136,7 @@ public:
 		Key_Value_couple<Key,Value> data;
 	 	data.key = key;
 	 	data.value = value;
-		if(!table[hashcode].found(key)){
+		if(table[hashcode].size() == 0 || (!table[hashcode].found(key))){
 			table[hashcode].insert(data);
 			_size++;
 		}else{
