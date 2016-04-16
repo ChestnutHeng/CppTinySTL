@@ -199,7 +199,9 @@ BSTree &lt; typename T &gt; value;
 |virtual BinNodePosi(T) &search(const T&e)|搜索
 |virtual BinNodePosi(T) insert(const T&e)|插入
 |virtual bool remove(const T&e)|删除
+
 AVLTree &lt; typename T &gt; value;
+
 |API|INFO|
 |---|---|
 |BinNodePosi(T) insert (const T&e)|插入
@@ -228,5 +230,15 @@ t2.set_time();
 t3 = t2 - t1;
 t3.print();
 ```
+
+###Hashtable.h
+Hashtable&lt; typename KEY,typename VALUE &gt; ht;
+|API|INFO|
+|---|---|
+|int size()|return size 
+|void insert(KEY,VALUE)|insert elements
+|VALUE find(KEY)|return values
+
+
 
 
