@@ -233,6 +233,8 @@ t3.print();
 
 ###Hashtable.h
 Hashtable&lt; typename KEY,typename VALUE &gt; ht;
+##API:
+
 |API|INFO|
 |---|---|
 |int size()|return size 
