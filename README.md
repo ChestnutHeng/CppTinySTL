@@ -118,8 +118,11 @@ API:
 ---
 
 ##BinTree.h
+
 Bintree&lt; typename Te&gt;value;
+
 API:
+
 |API|INFO|
 |---|---|
 |int size() const |规模
@@ -232,7 +235,7 @@ t3.print();
 ```
 
 ###Hashtable.h
-Hashtable&lt; typename KEY,typename VALUE &gt; ht;
+Hashtable&lt;typename KEY,typename VALUE&gt; ht;
 ##API:
 
 |API|INFO|
